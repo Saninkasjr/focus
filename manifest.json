@@ -1,0 +1,23 @@
+{
+  "name": "Pomodoro Focus",
+  "short_name": "Focus",
+  "description": "A simple and distraction-free Pomodoro timer to help you stay focused.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "scope": "/",
+  "orientation": "portrait"
+}
