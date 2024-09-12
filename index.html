@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#3b82f6">
+    <!-- Light Mode Theme Color -->
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+<!-- Dark Mode Theme Color -->
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
     <title>Pomodoro Focus</title>
     <link rel="manifest" href="/manifest.json">
@@ -57,6 +62,25 @@
         #startBtn:focus {
             outline: none; /* Removes the blue outline */
         }
+        @media (prefers-color-scheme: light) {
+    body {
+        background-color: #ffffff;
+        color: #000000;
+    }
+    .progress-ring__circle {
+        stroke: #3b82f6;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #000000;
+        color: #ffffff;
+    }
+    .progress-ring__circle {
+        stroke: #a0aec0;
+    }
+}
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark-mode">
