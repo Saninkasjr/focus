@@ -14,7 +14,7 @@
       "purpose": "any maskable"
     },
     {
-      "src": "Windows/icon-192x192.png",
+      "src": "./icons/windows11/SmallTile.scale-125.png",
       "sizes": "192x192",
       "type": "image/png"
     },
