@@ -5,21 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#3b82f6">
     <!-- Light Mode Theme Color -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-
-<!-- Dark Mode Theme Color -->
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <!-- Dark Mode Theme Color -->
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
     <title>Pomodoro Focus</title>
     <link rel="manifest" href="/manifest.json">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); /* Experiment with Inter font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         .dark-mode {
@@ -41,46 +44,32 @@
         }
 
         .dark-mode .progress-ring__circle {
-            stroke: #8a8e96; /* Subtle blue-grey color for paused state */
-        }
-
-        .dark-mode #startBtn {
-            background-color: transparent;
-            border: 2px solid #8a8e96;
-            color: #8a8e96;
-            transition: border-color 0.3s;
-        }
-
-        .dark-mode #startBtn:hover {
-            border-color: #a0aec0;
+            stroke: #8a8e96;
         }
 
         .dark-mode #status, .dark-mode h1 {
             color: #a0aec0;
         }
 
-        #startBtn:focus {
-            outline: none; /* Removes the blue outline */
-        }
         @media (prefers-color-scheme: light) {
-    body {
-        background-color: #ffffff;
-        color: #000000;
-    }
-    .progress-ring__circle {
-        stroke: #3b82f6;
-    }
-}
+            body {
+                background-color: #ffffff;
+                color: #000000;
+            }
+            .progress-ring__circle {
+                stroke: #3b82f6;
+            }
+        }
 
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #000000;
-        color: #ffffff;
-    }
-    .progress-ring__circle {
-        stroke: #a0aec0;
-    }
-}
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #000000;
+                color: #ffffff;
+            }
+            .progress-ring__circle {
+                stroke: #a0aec0;
+            }
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark-mode">
@@ -92,29 +81,31 @@
             </svg>
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg font-medium opacity-70" id="status" aria-live="polite">Ready</div>
         </div>
-        <button id="startBtn" class="font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out focus:outline-none">
-            Start Focus
-        </button>
+        <div id="instructions" class="text-sm opacity-60 mt-4">
+            Double tap: Start/Pause<br>
+            Long press: Test notification and sound
+        </div>
     </div>
     <script>
-  if (typeof navigator.serviceWorker !== 'undefined') {
-    navigator.serviceWorker.register('sw.js')
-  }
-</script>
-    <script>
-        const startBtn = document.getElementById('startBtn');
+        if (typeof navigator.serviceWorker !== 'undefined') {
+            navigator.serviceWorker.register('sw.js');
+        }
+
         const statusDisplay = document.getElementById('status');
         const circle = document.querySelector('.progress-ring__circle');
         const radius = circle.r.baseVal.value;
         const circumference = radius * 2 * Math.PI;
-        const sound = new Howl({ src: ['https://assets.mixkit.co/sfx/preview/mixkit-calm-relaxed-atmosphere-notification-tone-3598.mp3'] });
+        const sound = new Howl({ src: ['/music/noti.mp3'] });
 
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
         circle.style.strokeDashoffset = circumference;
 
         let isWorking = true;
         let timer;
-        let timeLeft = 25 * 60;  // Initial time set for work
+        let timeLeft = 25 * 60;
+        let taps = 0;
+        let lastTap = 0;
+        let longPressTimer;
 
         function setProgress(percent) {
             const offset = circumference - (percent / 100) * circumference;
@@ -129,30 +120,67 @@
                 sound.play();
                 isWorking = !isWorking;
                 timeLeft = isWorking ? 25 * 60 : 5 * 60;
-                startBtn.textContent = isWorking ? 'Start Focus' : 'Start Break';
                 statusDisplay.textContent = isWorking ? 'Ready to Focus' : 'Ready for Break';
                 document.body.classList.remove('timer-active');
                 if (Notification.permission === "granted") {
                     new Notification(isWorking ? "Time to focus!" : "Time for a break!");
                 }
+            } else {
+                statusDisplay.textContent = isWorking ? 'Focusing' : 'Taking a Break';
             }
         }
 
-        startBtn.addEventListener('click', () => {
+        function startPauseTimer() {
             if (timer) {
                 clearInterval(timer);
                 timer = null;
-                startBtn.textContent = isWorking ? 'Resume Focus' : 'Resume Break';
                 statusDisplay.textContent = 'Paused';
                 document.body.classList.remove('timer-active');
                 circle.style.stroke = '#8a8e96'; // Subtle change when paused
             } else {
                 timer = setInterval(updateTimer, 1000);
-                startBtn.textContent = 'Pause';
                 statusDisplay.textContent = isWorking ? 'Focusing' : 'Taking a Break';
                 document.body.classList.add('timer-active');
                 circle.style.stroke = isWorking ? '#8a8e96' : '#8a8e96'; // Adjust if needed based on state
             }
+        }
+
+        function testNotificationAndSound() {
+            sound.play();
+            if (Notification.permission === "granted") {
+                new Notification("This is a test notification!");
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        new Notification("This is a test notification!");
+                    }
+                });
+            }
+            statusDisplay.textContent = 'Testing notification and sound';
+            setTimeout(() => {
+                statusDisplay.textContent = isWorking ? 'Ready to Focus' : 'Ready for Break';
+            }, 3000);
+        }
+
+        document.body.addEventListener('touchstart', (e) => {
+            longPressTimer = setTimeout(testNotificationAndSound, 1000);
+        });
+
+        document.body.addEventListener('touchend', (e) => {
+            clearTimeout(longPressTimer);
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 500 && tapLength > 0) {
+                taps++;
+                if (taps === 2) {
+                    startPauseTimer();
+                    taps = 0;
+                    return;
+                }
+            } else {
+                taps = 1;
+            }
+            lastTap = currentTime;
         });
 
         if ("Notification" in window) {
