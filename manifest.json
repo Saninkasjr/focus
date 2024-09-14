@@ -42,5 +42,20 @@
       "sizes": "360x740",
       "type": "image/png"
     }
+  ],
+  "dir": "ltr",
+  "lang": "en",
+  "display_override": [
+    "fullscreen",
+    "window-controls-overlay"
+  ],
+  "categories": [
+    "business",
+    "education",
+    "fitness",
+    "health",
+    "lifestyle",
+    "medical",
+    "productivity"
   ]
 }
