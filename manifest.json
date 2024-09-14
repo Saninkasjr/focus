@@ -1,6 +1,6 @@
 {
   "name": "Chronosohere: timed focus",
-  "short_name": "Chronosohere",
+  "short_name": "Chrono",
   "description": "A sleek and simple, distraction-free timer that will helps your productivity with customizable focus mode and break durations. Easily stay on track with planned sessions.",
   "start_url": "/index.html?fullscreen=true",
   "display": "fullscreen",
