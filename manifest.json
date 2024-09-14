@@ -1,7 +1,7 @@
 {
-  "name": "Pomodoro Focus",
-  "short_name": "Focus",
-  "description": "A simple and distraction-free Pomodoro timer to help you stay focused.",
+  "name": "Chronosohere: timed focus",
+  "short_name": "Chronosohere",
+  "description": "A sleek and simple, distraction-free timer that will helps your productivity with customizable focus mode and break durations. Easily stay on track with planned sessions.",
   "start_url": "/index.html?fullscreen=true",
   "display": "fullscreen",
   "background_color": "#000000",
@@ -22,7 +22,7 @@
   ],
   "scope": "/",
   "orientation": "portrait",
-  "id": "pomodoro-focus-app",
+  "id": "Chronosohere-timed-focus",
   "launch_handler": {
     "client_mode": "window"
   },
