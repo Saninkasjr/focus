@@ -26,6 +26,21 @@
   "launch_handler": {
     "client_mode": "window"
   },
+  "dir": "ltr",
+  "lang": "en",
+  "display_override": [
+    "fullscreen",
+    "window-controls-overlay"
+  ],
+  "categories": [
+    "business",
+    "education",
+    "fitness",
+    "health",
+    "lifestyle",
+    "medical",
+    "productivity"
+  ],
   "screenshots": [
     {
       "src": "/screenshots/screenshot1.png",
@@ -42,20 +57,5 @@
       "sizes": "360x740",
       "type": "image/png"
     }
-  ],
-  "dir": "ltr",
-  "lang": "en",
-  "display_override": [
-    "fullscreen",
-    "window-controls-overlay"
-  ],
-  "categories": [
-    "business",
-    "education",
-    "fitness",
-    "health",
-    "lifestyle",
-    "medical",
-    "productivity"
   ]
 }
