@@ -1,11 +1,17 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+importScripts(
+  "https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js",
+);
 
 const CACHE_NAME = "pwabuilder-page";
 const OFFLINE_FALLBACK_PAGE = "index.html";
 const CACHE_ASSETS = [
   OFFLINE_FALLBACK_PAGE,
-  'music/noti.mp3',
-  'icons/icon-512x512.png'
+  "music/noti.mp3",
+  "icons/icon-512x512.png",
+  "icons/android-launchericon-192-192.png",
+  "/",
+  "index.html",
+  "manifest.json",
 ];
 
 self.addEventListener("message", (event) => {
@@ -14,10 +20,9 @@ self.addEventListener("message", (event) => {
   }
 });
 
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(CACHE_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHE_ASSETS)),
   );
 });
 
@@ -25,8 +30,8 @@ if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable();
 }
 
-self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
+self.addEventListener("fetch", (event) => {
+  if (event.request.mode === "navigate") {
     event.respondWith(
       (async () => {
         try {
@@ -42,50 +47,44 @@ self.addEventListener('fetch', (event) => {
           const cachedResponse = await cache.match(OFFLINE_FALLBACK_PAGE);
           return cachedResponse;
         }
-      })()
+      })(),
     );
   } else {
     event.respondWith(
-      caches.match(event.request)
-        .then((cachedResponse) => {
-          if (cachedResponse) {
-            return cachedResponse;
-          }
-          return fetch(event.request);
-        })
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(event.request);
+      }),
     );
   }
 });
 
-// Handle push notifications
-self.addEventListener('push', (event) => {
-  const data = event.data.json();
-  const title = data.title || 'Default Title';
-  const options = {
-    body: data.body || 'Default Body',
-    icon: data.icon || 'icons/icon-512x512.png',
-    badge: data.badge || 'icons/icon-512x512.png'
-  };
-
-  event.waitUntil(
-    self.registration.showNotification(title, options)
-  );
+// Add periodic sync event listener
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'update-cache') {
+    event.waitUntil(updateCache());
+  }
 });
 
-// Handle notification click
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true })
-      .then((clientList) => {
-        if (clientList.length > 0) {
-          const client = clientList[0];
-          client.focus();
-          return client.navigate(event.notification.data.url || '/');
-        } else {
-          return clients.openWindow(event.notification.data.url || '/');
+// Function to update cache
+async function updateCache() {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    for (const url of CACHE_ASSETS) {
+      try {
+        const response = await fetch(url, { cache: 'reload' });
+        if (response.ok) {
+          await cache.put(url, response);
+          console.log(`Updated cache for: ${url}`);
         }
-      })
-  );
-});
+      } catch (error) {
+        console.error(`Failed to update cache for ${url}:`, error);
+      }
+    }
+    console.log('Cache update completed');
+  } catch (error) {
+    console.error('Error updating cache:', error);
+  }
+}

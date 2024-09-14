@@ -130,10 +130,31 @@
     </div>
 
     <script>
-        if (typeof navigator.serviceWorker !== 'undefined') {
-            navigator.serviceWorker.register('sw.js');
-        }
+        if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(async (registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
 
+      if ('periodicSync' in registration) {
+        try {
+          const status = await navigator.permissions.query({
+            name: 'periodic-background-sync',
+          });
+          if (status.state === 'granted') {
+            await registration.periodicSync.register('update-cache', {
+              minInterval: 24 * 60 * 60 * 1000 // Sync once a day
+            });
+            console.log('Periodic Sync registered');
+          }
+        } catch (error) {
+          console.error('Periodic Sync registration failed:', error);
+        }
+      }
+    })
+    .catch((error) => {
+      console.error('Service Worker registration failed:', error);
+    });
+}
         const statusDisplay = document.getElementById('status');
         const circle = document.querySelector('.progress-ring__circle');
         const radius = circle.r.baseVal.value;
