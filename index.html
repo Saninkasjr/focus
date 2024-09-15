@@ -1,53 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#000000">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
     <title>Chronosphere Focus</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-    <link rel="manifest" href="/manifest.json">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="/manifest.json" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-</head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark-mode">
-    <div id="app" class="text-center p-8 rounded-lg transition-all duration-300">
-        <h1 class="text-2xl font-semibold mb-6 opacity-80">Chronosphere Focus</h1>
-        <div class="mb-8 relative">
-            <svg class="progress-ring" width="250" height="250">
-                <circle class="progress-ring__circle" stroke-width="4" fill="transparent" r="116" cx="125" cy="125"/>
-            </svg>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg font-medium opacity-70" id="status" aria-live="polite">Ready</div>
+  </head>
+  <body
+    class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark-mode"
+  >
+    <div
+      id="app"
+      class="text-center p-8 rounded-lg transition-all duration-300"
+    >
+      <h1 class="text-2xl font-semibold mb-6 opacity-80">Chronosphere Focus</h1>
+      <div class="mb-8 relative">
+        <svg class="progress-ring" width="250" height="250">
+          <circle
+            class="progress-ring__circle"
+            stroke-width="4"
+            fill="transparent"
+            r="116"
+            cx="125"
+            cy="125"
+          />
+        </svg>
+        <div
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg font-medium opacity-70"
+          id="status"
+          aria-live="polite"
+        >
+          Ready
         </div>
-        <div id="instructions" class="text-sm opacity-60 mt-4">
-            Double tap: Start/Pause<br>
-            Long press: Open settings
-        </div>
+      </div>
+      <div id="instructions" class="text-sm opacity-60 mt-4">
+        Double tap: Start<br />
+        Long press: settings
+      </div>
     </div>
 
     <div id="settingsPopup" class="settings-popup">
-        <h2 class="text-xl font-semibold mb-4">Settings</h2>
-        <div class="mb-4">
-            <label class="block mb-2">Theme:</label>
-            <select id="themeSelect" class="w-full p-2 rounded">
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-                <option value="system">System</option>
-            </select>
-        </div>
-        <div class="mb-4">
-            <label class="block mb-2">Focus Duration (minutes):</label>
-            <input type="number" id="focusDuration" class="w-full p-2 rounded" min="1" max="120">
-        </div>
-        <div class="mb-4">
-            <label class="block mb-2">Break Duration (minutes):</label>
-            <input type="number" id="breakDuration" class="w-full p-2 rounded" min="1" max="30">
-        </div>
-        <button id="saveSettings" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save</button>
-        <button id="closeSettings" class="ml-2 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Close</button>
+      <h2 class="text-3xl font-semibold mb-4">Settings</h2>
+      <div class="mb-4">
+        <label class="block mb-2">Theme:</label>
+        <select id="themeSelect" class="w-full p-2 rounded">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="system">System</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block mb-2">Focus Duration (minutes):</label>
+        <input
+          type="number"
+          id="focusDuration"
+          class="w-full p-2 rounded"
+          min="1"
+          max="120"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block mb-2">Break Duration (minutes):</label>
+        <input
+          type="number"
+          id="breakDuration"
+          class="w-full p-2 rounded"
+          min="1"
+          max="30"
+        />
+      </div>
+      <button
+        id="saveSettings"
+        class="bg-transparent text-purple-800 font-bold px-4 py-2 rounded hover:bg-blue-600 mt-2"
+      >
+        Save
+      </button>
+      <button
+        id="closeSettings"
+        class="ml-2 bg-transparent text-white-800 font-medium px-4 py-2 rounded hover:bg-gray-400"
+      >
+        Close
+      </button>
     </div>
 
     <script src="/js/main.js"></script>
-</body>
+  </body>
 </html>
