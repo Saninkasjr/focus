@@ -54,12 +54,11 @@
     <div id="settingsPopup" class="settings-popup">
       <h2 class="text-3xl font-semibold mb-4">Settings</h2>
       <div class="mb-4">
-        <label class="block mb-2">Theme:</label>
-        <select id="themeSelect" class="w-full p-2 rounded">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-          <option value="system">System</option>
-        </select>
+        <div class="title">Select theme</div>
+        <div class="theme-container">
+          <div value="light" class="theme-option light-theme">Light</div>
+          <div value="dark" class="theme-option dark-theme selected">Dark</div>
+        </div>
       </div>
       <div class="mb-4">
         <label class="block mb-2">Focus Duration (minutes):</label>
