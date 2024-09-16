@@ -6,6 +6,8 @@ const CACHE_NAME = "chronoshere";
 const OFFLINE_FALLBACK_PAGE = "/index.html";
 const CACHE_ASSETS = [
   OFFLINE_FALLBACK_PAGE,
+  "/css/style.css",
+  "/js/main.js",
   "/",
   "music/noti.mp3",
   "icons/icon-512x512.png",
