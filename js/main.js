@@ -51,10 +51,10 @@ let state = {
   audioPlayingTimer: null,
   focusDuration: 25,
   breakDuration: 5,
-  selectedTheme: 'dark', // default theme
+  selectedTheme: 'dark',
 };
 
-//loading local settings
+//loading saved settings from localStorage into state
 function loadSettings() {
   const settings = ['theme', 'focusDuration', 'breakDuration']
   settings.forEach(setting => {
@@ -65,6 +65,7 @@ function loadSettings() {
     }
   })
 }
+loadSettings()
 
 // Sound
 const sound = new Howl({ src: ['/music/noti.mp3'] });
