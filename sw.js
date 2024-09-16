@@ -2,16 +2,16 @@ importScripts(
   "https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js",
 );
 
-const CACHE_NAME = "pwabuilder-page";
-const OFFLINE_FALLBACK_PAGE = "index.html";
+const CACHE_NAME = "chronoshere";
+const OFFLINE_FALLBACK_PAGE = "/index.html";
 const CACHE_ASSETS = [
   OFFLINE_FALLBACK_PAGE,
+  "/",
   "music/noti.mp3",
   "icons/icon-512x512.png",
-  "icons/android-launchericon-192-192.png",
-  "/",
-  "index.html",
-  "manifest.json",
+  "/manifest.json",
+  "/sw.js",
+  "icons/android-launchericon-192-192.png"
 ];
 
 self.addEventListener("message", (event) => {
