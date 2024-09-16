@@ -60,35 +60,41 @@
           <div value="dark" class="theme-option dark-theme selected">Dark</div>
         </div>
       </div>
-      <div class="mb-4">
-        <label class="block mb-2">Focus Duration (minutes):</label>
-        <input
-          type="number"
-          id="focusDuration"
-          class="w-full p-2 rounded"
-          min="1"
-          max="120"
-        />
+
+      <div class="mb-10"></div>
+      <div class="title text-sm">Duration</div>
+      <div id="input-container">
+        <div class="mb-4">
+          <label class="block mb-6">Focus Duration:</label>
+          <input
+            type="number"
+            id="focusDuration"
+            class="w-full p-2 pb-2 rounded"
+            min="1"
+            max="120"
+          />
+        </div>
+        <div class="mb-4 ml-4">
+          <label class="block mb-6">Break Duration:</label>
+          <input
+            type="number"
+            id="breakDuration"
+            class="w-full p-2 rounded"
+            min="1"
+            max="30"
+          />
+        </div>
       </div>
-      <div class="mb-4">
-        <label class="block mb-2">Break Duration (minutes):</label>
-        <input
-          type="number"
-          id="breakDuration"
-          class="w-full p-2 rounded"
-          min="1"
-          max="30"
-        />
-      </div>
+
       <button
         id="saveSettings"
-        class="bg-transparent text-purple-800 font-bold px-4 py-2 rounded hover:bg-blue-600 mt-2"
+        class="bg-transparent font-bold px-1 py-4 rounded hover:bg-blue-600 mt-2"
       >
         Save
       </button>
       <button
         id="closeSettings"
-        class="ml-2 bg-transparent text-white-800 font-medium px-4 py-2 rounded hover:bg-gray-400"
+        class="ml-2 bg-transparent text-white-800 font-semibold px-4 py-2 rounded hover:bg-gray-400"
       >
         Close
       </button>
