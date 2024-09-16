@@ -25,6 +25,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+
 // DOM Elements
 const statusDisplay = document.getElementById('status');
 const circle = document.querySelector('.progress-ring__circle');
@@ -37,6 +38,7 @@ const closeSettingsBtn = document.getElementById('closeSettings');
 // Constants
 const radius = circle.r.baseVal.value;
 const circumference = radius * 2 * Math.PI;
+
 
 // State
 let state = {
@@ -52,6 +54,18 @@ let state = {
   selectedTheme: 'dark', // default theme
 };
 
+//loading local settings
+function loadSettings() {
+  const settings = ['theme', 'focusDuration', 'breakDuration']
+  settings.forEach(setting => {
+    const savedSetting = localStorage.getItem(setting)
+    if (savedSetting !== null) {
+      const statekey = setting === 'theme' ? 'selectedTheme' : setting;
+      state[statekey] = savedSetting
+    }
+  })
+}
+
 // Sound
 const sound = new Howl({ src: ['/music/noti.mp3'] });
 
@@ -59,7 +73,7 @@ const sound = new Howl({ src: ['/music/noti.mp3'] });
 function init() {
   circle.style.strokeDasharray = `${circumference} ${circumference}`;
   circle.style.strokeDashoffset = circumference;
-  setTheme(state.selectedTheme); // Initialize with the default theme
+  setTheme(state.selectedTheme);
   setupEventListeners();
   if ("Notification" in window) {
     Notification.requestPermission();
@@ -168,11 +182,16 @@ function saveSettings() {
   state.focusDuration = parseInt(focusDurationInput.value);
   state.breakDuration = parseInt(breakDurationInput.value);
 
-  const theme = state.selectedTheme;  // Get the selected theme from state
+  const theme = state.selectedTheme;
   setTheme(theme);
   closeSettings();
   state.timeLeft = state.isWorking ? state.focusDuration * 60 : state.breakDuration * 60;
   setProgress(100);
+
+  //saving settings to local storage
+  localStorage.setItem('theme', state.selectedTheme)
+  localStorage.setItem('focusDuration', state.focusDuration)
+  localStorage.setItem('breakDuration', state.breakDuration)
 }
 
 // Theme Functions
