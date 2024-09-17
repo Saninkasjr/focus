@@ -44,8 +44,10 @@ function updateSelectedTheme() {
   themeOptions.forEach(option => {
     if (option.getAttribute('value') === state.selectedTheme) {
       option.setAttribute('selected', '')
+      option.classList.add('selected')
     } else {
       option.removeAttribute('selected')
+      option.classList.remove('selected')
     }
   })
 }
@@ -85,6 +87,7 @@ const sound = new Howl({ src: ['/music/noti.mp3'] });
 function init() {
   circle.style.strokeDasharray = `${circumference} ${circumference}`;
   circle.style.strokeDashoffset = circumference;
+  updateSelectedTheme()
   setTheme(state.selectedTheme);
   setupEventListeners();
   if ("Notification" in window) {
@@ -105,7 +108,8 @@ function setupEventListeners() {
     option.addEventListener('click', function() {
       themeOptions.forEach(opt => opt.classList.remove('selected'));
       this.classList.add('selected');
-      state.selectedTheme = this.getAttribute('value');  // Update state when a theme is clicked
+      state.selectedTheme = this.getAttribute('value');
+      updateSelectedTheme()
     });
   });
 }
