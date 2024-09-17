@@ -103,8 +103,9 @@ function setupEventListeners() {
   const themeOptions = document.querySelectorAll('.theme-option');
   themeOptions.forEach(option => {
     option.addEventListener('click', function() {
-      state.selectedTheme = this.getAttribute('value')
-      updateSelectedTheme()
+      themeOptions.forEach(opt => opt.classList.remove('selected'));
+      this.classList.add('selected');
+      state.selectedTheme = this.getAttribute('value');  // Update state when a theme is clicked
     });
   });
 }
@@ -217,6 +218,7 @@ function setTheme(theme) {
   } else if (theme === 'dark') {
     document.body.classList.remove('light-mode');
     document.body.classList.add('dark-mode');
+    updateSelectedTheme()
   } else {
     // System theme
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -227,7 +229,6 @@ function setTheme(theme) {
       document.body.classList.add('light-mode');
     }
   }
-  updateSelectedTheme()
 }
 
 // Initialize the app
