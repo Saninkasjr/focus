@@ -39,6 +39,16 @@ const closeSettingsBtn = document.getElementById('closeSettings');
 const radius = circle.r.baseVal.value;
 const circumference = radius * 2 * Math.PI;
 
+function updateSelectedTheme() {
+  const themeOptions = document.querySelectorAll('.theme-option')
+  themeOptions.forEach(option => {
+    if (option.getAttribute('value') === state.selectedTheme) {
+      option.setAttribute('selected', '')
+    } else {
+      option.removeAttribute('selected')
+    }
+  })
+}
 
 // State
 let state = {
@@ -53,17 +63,18 @@ let state = {
   breakDuration: 5,
   selectedTheme: 'dark',
 };
+updateSelectedTheme()
 
 //loading saved settings from localStorage into state
 function loadSettings() {
-  const settings = ['theme', 'focusDuration', 'breakDuration']
+  const settings = ['selectedTheme', 'focusDuration', 'breakDuration']
   settings.forEach(setting => {
     const savedSetting = localStorage.getItem(setting)
     if (savedSetting !== null) {
-      const statekey = setting === 'theme' ? 'selectedTheme' : setting;
-      state[statekey] = savedSetting
+      state[setting] = savedSetting
     }
   })
+  updateSelectedTheme()
 }
 loadSettings()
 
@@ -92,9 +103,8 @@ function setupEventListeners() {
   const themeOptions = document.querySelectorAll('.theme-option');
   themeOptions.forEach(option => {
     option.addEventListener('click', function() {
-      themeOptions.forEach(opt => opt.classList.remove('selected'));
-      this.classList.add('selected');
-      state.selectedTheme = this.getAttribute('value');  // Update state when a theme is clicked
+      state.selectedTheme = this.getAttribute('value')
+      updateSelectedTheme()
     });
   });
 }
@@ -185,14 +195,18 @@ function saveSettings() {
 
   const theme = state.selectedTheme;
   setTheme(theme);
+  updateSelectedTheme()
   closeSettings();
   state.timeLeft = state.isWorking ? state.focusDuration * 60 : state.breakDuration * 60;
   setProgress(100);
 
   //saving settings to local storage
-  localStorage.setItem('theme', state.selectedTheme)
-  localStorage.setItem('focusDuration', state.focusDuration)
-  localStorage.setItem('breakDuration', state.breakDuration)
+  function savelocalStorage() {
+    localStorage.setItem('selectedTheme', state.selectedTheme)
+    localStorage.setItem('focusDuration', state.focusDuration)
+    localStorage.setItem('breakDuration', state.breakDuration)
+  }
+  savelocalStorage()
 }
 
 // Theme Functions
@@ -213,6 +227,7 @@ function setTheme(theme) {
       document.body.classList.add('light-mode');
     }
   }
+  updateSelectedTheme()
 }
 
 // Initialize the app
